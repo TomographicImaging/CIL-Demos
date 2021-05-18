@@ -9,7 +9,7 @@ In order to open and run the notebooks interactively in an executable environmen
 **Note:** In the Binder interface, there is no GPU available.
 
 # Run the notebooks locally
-Alternatively, you can create a Conda environment using the environment.yml in the [binder](#/binder) directory:
+Alternatively, you can create a Conda environment using the environment.yml in the [binder](https://github.com/TomographicImaging/CIL-Demos/tree/main/binder) directory:
 
 ```bash 
 conda env create -f environment.yml
