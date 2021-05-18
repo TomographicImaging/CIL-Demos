@@ -9,9 +9,11 @@ In order to open and run the notebooks interactively in an executable environmen
 **Note:** In the Binder interface, there is no GPU available.
 
 # Run the notebooks locally
-Alternatively, you can create a Conda environment using the environment.yml
+Alternatively, you can create a Conda environment using the environment.yml in the **binder** directory:
 
-```bash conda env create -f environment.yml```
+```bash 
+conda env create -f environment.yml
+```
 
 **Note:** Depending on your nvidia-drivers, you can modify the `cudatoolkit` parameter. See [here](https://docs.nvidia.com/deploy/cuda-compatibility/index.html) for more information. For this environment `cudatoolkit=9.2` is used.
 
