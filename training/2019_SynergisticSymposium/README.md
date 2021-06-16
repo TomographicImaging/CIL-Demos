@@ -5,7 +5,7 @@
 **Note:** Depending on your nvidia-drivers, you can modify the `cudatoolkit` parameter. See [here](https://docs.nvidia.com/deploy/cuda-compatibility/index.html) for more information.
 
 ```bash
-conda create --name cil_19_10 -c anaconda -c conda-forge -c ccpi -c astra-toolbox/label/dev ccpi-framework=19.10 ccpi-astra=19.10 ccpi-regulariser tomophantom cudatoolkit=9.0 ipywidgets
+conda create --name cil_19_10 -c anaconda -c conda-forge -c astra-toolbox -c ccpi astra-toolbox=1.8 ccpi-framework=19.10 ccpi-astra=19.10 ccpi-regulariser tomophantom cudatoolkit=9.0 jupyterlab nb_conda_kernels ipywidgets
 ```      
 
 ## 2) **Activate the environment**
