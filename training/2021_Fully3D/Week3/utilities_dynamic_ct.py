@@ -138,36 +138,7 @@ def read_extra_frames(file_path, file_name, frame):
     return file_info
 
 
-# Create circular mask
-def create_circular_mask(h, w, center=None, radius=None):
 
-    if center is None: 
-        center = (int(w/2), int(h/2))
-    if radius is None: 
-        radius = min(center[0], center[1], w-center[0], h-center[1])
-
-    Y, X = np.ogrid[:h, :w]
-    dist_from_center = np.sqrt((X - center[0])**2 + (Y-center[1])**2)
-
-    mask = dist_from_center <= radius
-    return mask.astype(int)
-
-# FBP reconstruction per slice
-def FBP_recon_per_slice(image_geom, data):
-    
-    # get 3D image geometry
-    recon = image_geom.allocate()
-    
-    ag2D = data.geometry.subset(channel=0)
-    ig2D = ag2D.get_ImageGeometry()
-    ig2D.voxel_num_x = 256
-    ig2D.voxel_num_y = 256    
-    
-    for i in range(recon.geometry.channels):
-        tmp = FBP(ig2D, ag2D)(data.subset(channel=i))
-        recon.fill(tmp, channel=i)   
-    
-    return recon
 
 
     
