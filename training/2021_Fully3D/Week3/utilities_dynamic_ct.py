@@ -5,22 +5,10 @@ import os
 import wget
 
 
-# download zenodo
-def download_zenodo():
-    
-    if os.path.exists("MatlabData"):
-        pass
-    else:
-        print("Download files from Zenodo ... ")
-        os.mkdir("MatlabData")
-        wget.download("https://zenodo.org/record/3696817/files/GelPhantomData_b4.mat", out="MatlabData")
-        wget.download("https://zenodo.org/record/3696817/files/GelPhantom_extra_frames.mat", out="MatlabData")
-        print("Finished.")
-
 # read all the 17 frames
 def read_frames(file_path, file_name):
     
-    mat_contents = sio.loadmat(file_path + file_name,\
+    mat_contents = sio.loadmat(os.path.join(file_path,file_name),\
                            mat_dtype = True,\
                            squeeze_me = True,\
                            struct_as_record = True) 
@@ -79,7 +67,7 @@ def read_frames(file_path, file_name):
 # read extra frames: 1, 18
 def read_extra_frames(file_path, file_name, frame):
 
-    mat_contents = sio.loadmat(file_path + file_name,\
+    mat_contents = sio.loadmat(os.path.join(file_path,file_name),\
                                mat_dtype = True,\
                                squeeze_me = True,\
                                struct_as_record = True)
@@ -95,15 +83,12 @@ def read_extra_frames(file_path, file_name, frame):
 
     # extract Distance Source Detector
     distanceSourceDetector = parameters.item()['distanceSourceDetector']
-    # print(distanceSourceDetector)
 
     # extract Distance Source Origin
     distanceSourceOrigin = parameters.item()['distanceSourceOrigin']
-    # print(distanceSourceOrigin)
 
     # extract geometric Magnification
     geometricMagnification = parameters.item()['geometricMagnification']
-    # print(geometricMagnification)
 
     # angles in rad
     angles = parameters.item()['angles'].item()
