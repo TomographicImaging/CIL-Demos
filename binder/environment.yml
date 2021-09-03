@@ -1,6 +1,7 @@
 name: cil_binder
 channels:
   - ccpi/label/dev
+  - ccpi
   - intel/label/oneapibeta
   - astra-toolbox/label/dev
   - conda-forge
