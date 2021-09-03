@@ -26,6 +26,7 @@ dependencies:
   - charls=2.2.0=h9c3ff4c_0
   - cil=21.2.0=np118py37_0
   - cil-astra=21.2.0=np118py37_0
+  - cil-data==21.0.0
   - common_cmplr_lib_rt=2021.1b10=intel_2496
   - common_cmplr_lic_rt=2021.1b10=intel_2496
   - cudatoolkit=9.2.148=h80a95b2_8
@@ -153,5 +154,3 @@ dependencies:
   - zfp=0.5.5=h9c3ff4c_5
   - zlib=1.2.11=h516909a_1010
   - zstd=1.5.0=ha95c52a_0
-  - pip:
-    - cil-data==21.0.0
