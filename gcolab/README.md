@@ -38,8 +38,8 @@ The `condacola.install()` provides Mambaforge by default, which is faster than m
 
 # Run other CIL notebooks
 
-Using the above commands you can open and run other notebooks in the [CIL-Demos](https://github.com/TomographicImaging/CIL-Demos) repository. Go to `File --> Open Notebook` and paste `https://github.com/TomographicImaging/CIL-Demos`.
+Using the commands above you can open and run other notebooks in the [CIL-Demos](https://github.com/TomographicImaging/CIL-Demos) repository. Go to `File --> Open Notebook` and paste `https://github.com/TomographicImaging/CIL-Demos`.
 
-![alt text](open_nbs.png)
+![open_nbs](https://user-images.githubusercontent.com/22398586/184404934-142c5ae6-f1f5-461f-b25b-634c425b4a98.png)
 
 **Note:** To run the notebooks in the [training](https://github.com/TomographicImaging/CIL-Demos/training) folder using Google colab you need to download the data used for each notebook. We usually run these notebooks on cloud machines where these datasets are already downloaded.
