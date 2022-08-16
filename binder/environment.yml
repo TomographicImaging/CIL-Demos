@@ -1,5 +1,6 @@
 name: cil_binder_v22
 channels:
+  - astra-toolbox/label/dev
   - intel
   - oxfordcontrol
   - ccpi
