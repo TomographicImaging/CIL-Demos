@@ -15,7 +15,7 @@ Alternatively, you can create a Conda environment using the environment.yml
 conda env create -f environment.yml
 ```
 
-**Note:** Depending on your nvidia-drivers, you can modify the `cudatoolkit` parameter. See [here](https://docs.nvidia.com/deploy/cuda-compatibility/index.html) for more information. For this environment `cudatoolkit=9.2` is used.
+**Note:** Depending on your nvidia-drivers, you can modify the `cudatoolkit` parameter. See [here](https://docs.nvidia.com/deploy/cuda-compatibility/index.html) for more information. For this environment `cudatoolkit=9.0` is used.
 
 **Note:** For the `Tomography reconstruction` demo, you can change `device=cpu` to `device=gpu`, to speed up the reconstructions.
 
