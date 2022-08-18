@@ -67,14 +67,17 @@ for i in range(num_steps):
 
 #%%
 diffs = []
+clims = []
 for i in range(num_steps-1):
     diffs.append(solutions[i+1]-solutions[i])
+    clim = max(abs(diffs[0].max()), abs(diffs[0].min()))
+    clims.append( (-clim, clim) )
 
 #%%
 
 displ = [ solutions[0], solutions[0]]
 titles = ['iteration {}'.format(N), 'diff']
-i = 0 
+i = 1
 for x,y in zip(solutions[1:],diffs):
     i += 1
     displ += [x,y] 
@@ -82,5 +85,20 @@ for x,y in zip(solutions[1:],diffs):
 cmaps = ['gray', 'seismic'] * int(len(displ) / 2)
 start=6
 end = 10
-show2D(displ[start:end], title=titles[start:end], cmaps=cmaps[start:end] )
+show2D(displ[start:end], title=titles[start:end], cmap=cmaps[start:end] )
 
+#%%
+# show only from a list
+showlist = [0,1,4,5,18,19]
+# ranges are not finalised
+# ranges = tuple([clims[el] for el in showlist])
+show2D([displ[el] for el in showlist],
+        title=[titles[el] for el in showlist],
+        cmap=[cmaps[el] for el in showlist]
+        )
+#%%
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots()
+ax.semilogy([N*i for i, el in enumerate(algo.loss)], algo.loss, 'go--')
+plt.show()
