@@ -6,18 +6,22 @@ from cil.processors import TransmissionAbsorptionConverter, CentreOfRotationCorr
 from cil.recon import FDK
 from cil.utilities.display import show2D, show_geometry
 import matplotlib.pyplot as plt
-
+import numpy as np
 #%%
 # base_dir = os.path.abspath("/mnt/materials/SIRF/Fully3D/CIL/")
 # base_dir = os.path.abspath(r'C:\Users\ofn77899\Data\walnut')
 # data_name = "valnut"
-filename = os.path.join(r"D:\lhe97136\Work\Data\CIL\valnut", "valnut_2014-03-21_643_28/tomo-A/valnut_tomo-A.txrm")
+#filename = os.path.join(r"D:\lhe97136\Work\Data\CIL\valnut", "valnut_2014-03-21_643_28/tomo-A/valnut_tomo-A.txrm")
+filename = os.path.join('/data/notebooks/valnut', "valnut_2014-03-21_643_28/tomo-A/valnut_tomo-A.txrm")
 
 data = ZEISSDataReader(file_name=filename).read()
 
 data2d = data.get_slice(vertical='centre')
+del data
 #%%
 
+show2D(data2d)
+#%%
 data2d = TransmissionAbsorptionConverter()(data2d)
 data2d = CentreOfRotationCorrector.image_sharpness()(data2d)
 
@@ -29,14 +33,13 @@ reduce_factor = 10
 
 data_reduced = Slicer(roi={'angle': (0,-1,reduce_factor)})(data2d)
 
-
+data_reduced =data2d
 
 #%%
 ig = data_reduced.geometry.get_ImageGeometry()
 fdk =  FDK(data_reduced, ig)
 recon_reduced = fdk.run()
 
-#%%
 show2D(recon_reduced, fix_range=(-0.01,0.06))
 
 # %%
@@ -50,83 +53,71 @@ f = LeastSquares(A=A, b=data_reduced)
 
 alpha = 0.001
 
-TV = alpha * FGP_TV()
+TV = alpha * FGP_TV(nonnegativity=False)
 
-#%%
+
+# %%
+
+#must be in consecutive order
+keep = [0, 1, 2,4,8,16, 32, 64]
+
+solutions = [ig.allocate(0)]
+iterations = [0]
+residuals = [data_reduced]
+diff = [ig.allocate(0)]
 
 algo = FISTA(ig.allocate(0), f=f, g=TV, max_iteration=1000)
-# %%
+for i  in range(1, len(keep)):
+    
+    #stop one before to get diff
+    algo.run(keep[i]-keep[i-1]-1, print_interval=1)
+    previous = algo.solution.copy()
 
+    algo.run(1, print_interval=1)
 
-N = 1  # run N steps
-algo.update_objective_interval = N
-num_steps = 129
-solutions = []
-
-#%%
-keep = [0, 1, 2,4,8,16, 32, 64, 128]
-#%%
-for i in range(num_steps):
-    algo.run(N, print_interval=1)
-    if i in keep:
-        solutions.append(algo.solution.as_array().copy())
+    iterations.append(algo.iteration)
+    solutions.append(algo.solution.copy())
+    residuals.append(A.direct(algo.solution) - data_reduced)
+    diff.append(solutions[i] - previous)
 
 #%%
-diffs = []
-clims = []
-if i in range(len(solutions)):
-    diffs.append(solutions[i+1]-solutions[i])
-    clim = max(abs(diffs[0].max()), abs(diffs[0].min()))
-    clims.append( (-clim, clim) )
+lim_residual = max([i.abs().max() for i in residuals])* 1.1
+lim_diff= max([i.abs().max() for i in diff])* 1.1
+lim_solutions_min = min([i.min() for i in solutions]) * 1.1
+lim_solutions_max = max([i.max() for i in solutions]) * 1.1
+
 
 #%%
+#plot solution and residuals
 
-displ = [ solutions[0], solutions[0]]
-titles = ['iteration {}'.format(N), 'diff']
-i = 1
-for x,y in zip(solutions[1:],diffs):
-    i += 1
-    displ += [x,y] 
-    titles += ['iteration {}'.format(N * i), 'diff']
-cmaps = ['gray', 'seismic'] * int(len(displ) / 2)
-start=6
-end = 10
-show2D(displ[start:end], title=titles[start:end], cmap=cmaps[start:end] )
+cmaps = ['gray', 'seismic']
+for i in range(1,len(keep)):
+    show2D([solutions[i], residuals[i]],\
+        title=[f"Iteration {iterations[i]}", "Residuals"],\
+        cmap=cmaps, fix_range=[(lim_solutions_min, lim_solutions_max), (-lim_residual, lim_residual)], size=(15,15), num_cols=3)
 
 #%%
-# show only from a list
-showlist = keep#[0,1,4,5,18,19]
-# ranges are not finalised
-# ranges = tuple([clims[el] for el in showlist])
-show2D([displ[el] for el in showlist],
-        title=[titles[el] for el in showlist],
-        cmap=[cmaps[el] for el in showlist]
-        )
+#plot solution, diff and residuals
 
-# %%
 
-for k in keep:
+cmaps = ['gray', 'seismic', 'seismic']
+for i in range(1,len(keep)):
+    show2D([solutions[i], diff[i], residuals[i]],\
+        title=[f"Iteration {iterations[i]}",f"Difference from previous iteration", "Residuals"],\
+        cmap=cmaps, fix_range=[(lim_solutions_min, lim_solutions_max), (-lim_diff, lim_diff), (-lim_residual, lim_residual)], size=(15,15), num_cols=2)
+
+#%%
+#objective tracking plot
+for i in range(1,len(keep)):
     fig, ax = plt.subplots(figsize=(15, 10))
     fig.set_facecolor('xkcd:white')
     ax.set_ylabel("Objective Function Value f(x)", fontsize=15)
     ax.set_xlabel("Iteration", fontsize=15)
     ax.tick_params(axis='both', which='major', labelsize=15)
-    #ax.tick_params(axis='both', which='major', labelsize=10)
-    ax.semilogy([N*i for i, el in enumerate(algo.loss)], algo.loss, 'b--')
-    ax.semilogy(k, algo.loss[k], 'bo', markersize=10)
+    ax.semilogy([i for i, el in enumerate(algo.loss)], algo.loss, 'b--')
+    ax.semilogy(keep[i], algo.loss[keep[i]], 'bo', markersize=10)
     plt.show()
 
 
 #%%
-cmaps = ['gray', 'seismic']
-for i in range(len(keep)-1):
-    show2D([solutions[i+1], solutions[i+1]-solutions[i]], 
-        title=[f"Iteration {keep[i+1]}",f"Difference between iteration {keep[i+1]} and {keep[i]}"],
-        cmap=cmaps, fix_range=[(0, 0.05), (-0.015, 0.015)], size=(15,15))
-
-# %%
-show2D(solutions)
-show2D(diffs)
-# %%
-
-
+show2D(data2d)
