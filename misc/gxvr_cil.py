@@ -101,13 +101,14 @@ ag = AcquisitionGeometry.create_Cone3D( source_position=source_position,\
                                         rotation_axis_direction=rotation_axis_direction, \
                                         rotation_axis_position=rotation_axis_position)
 ag.set_panel(num_pixels=tuple(num_pixels), \
-             pixel_size=tuple(pixel_size))           
-ag.set_angles(angles=angles, angle_unit='degree')                          
+             pixel_size=tuple(pixel_size)
+             )           
+ag.set_angles(angles=-angles+180, angle_unit='degree')               
 # %%
-from cil.utilities.display import show2D, show_geometry
+# from cil.utilities.display import show2D, show_geometry
 
-show_geometry(ag)
-# %%
+# show_geometry(ag)
+
 import os
 from cil.io import TIFFStackReader
 import glob
@@ -115,7 +116,7 @@ import glob
 data_dir = os.path.abspath("C:/Users/ofn77899/Data/LLion/VL_install_test/GVXR-Images/AMAZE_Al")
 projection_files = glob.glob(os.path.join(data_dir, "AMAZE_Al_*"))
 
-#%%
+
 reader = TIFFStackReader(file_name=projection_files)
 gvxr_data = reader.read_as_AcquisitionData(ag)
 
@@ -123,37 +124,19 @@ gvxr_data = reader.read_as_AcquisitionData(ag)
 
 gvxr_data /= 255.
 
-# %%
-# from cil.utilities.jupyter import islicer
 
-show2D(gvxr_data, slice_list=[i*60 for i in range(6)], cmap='magma')
-# %%
+# show2D(gvxr_data, slice_list=[i*60 for i in range(6)], cmap='magma')
 from cil.processors import TransmissionAbsorptionConverter
 
 data = TransmissionAbsorptionConverter()(gvxr_data)
 
-#%%
-show2D(data, slice_list=[i*60 for i in range(6)], cmap='magma')
+# show2D(data, slice_list=[i*60 for i in range(6)], cmap='magma')
 
-#%%
 
 from cil.recon import FDK
 data.reorder('tigre')
 recon = FDK(data).run()
-# %%
+
 show2D(recon, cmap='gray', fix_range=(-0.01, 0.08), slice_list=[175,150])
-# %%
-from cil.optimisation.algorithms import CGLS
-#from cil.optimisation.functions import LeastSquares, TotalVariation
-from cil.plugins.tigre import ProjectionOperator
 
-ig = ag.get_ImageGeometry()
-
-A = ProjectionOperator(ig, ag)
-
-algo = CGLS(operator=A, data=data, max_iteration=1000, update_objective_interval=1)
-#%%
-algo.run(10, verbose=1)
-# %%
-show2D(algo.solution, cmap='gray', fix_range=(-0.01, 0.08), slice_list=[175,150])
 # %%
