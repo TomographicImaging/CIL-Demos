@@ -1,0 +1,1 @@
+islicer(data_in, direction='angle',size=10, minmax=(0,1))
