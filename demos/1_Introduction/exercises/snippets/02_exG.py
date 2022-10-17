@@ -4,6 +4,8 @@ show2D(data_binned)
 data_binned_absorption = TransmissionAbsorptionConverter()(data_binned)
 
 data_binned_centred = CentreOfRotationCorrector.image_sharpness()(data_binned_absorption)
+# notice the offset is approximately the same in mm as calculated on the unbinned data, but the offset in pixles is now 1/4 of the value
+
 
 data_binned_centred.reorder(order='tigre')
 fdk =  FDK(data_binned_centred)
