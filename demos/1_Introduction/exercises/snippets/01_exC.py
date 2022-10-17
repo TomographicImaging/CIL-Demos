@@ -1,3 +1,5 @@
-data_absorption = TransmissionAbsorptionConverter(min_intensity=0)(data_in)
+# calculate the absortion data using the Beer–Lambert law
+data_absorption = TransmissionAbsorptionConverter()(data_in)
 
-show2D(data_absorption, slice_list=('vertical', 500))
+# show the centre slice using show2D
+show2D(data_absorption, slice_list=('vertical', 'centre'))
