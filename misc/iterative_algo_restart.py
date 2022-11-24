@@ -1,7 +1,7 @@
 #%%
 from cil.utilities import dataexample
 from cil.optimisation.algorithms import FISTA
-from cil.optimisation.functions import LeastSquares, TotalVariation, IndicatorBox
+from cil.optimisation.functions import LeastSquares, IndicatorBox 
 from cil.optimisation.functions import ZeroFunction
 from cil.plugins.tigre import ProjectionOperator
 from cil.recon import FDK
@@ -22,6 +22,15 @@ data = dataexample.SIMULATED_CONE_BEAM_DATA.get()
 show2D(data, title='data')
 
 #%%
+# convert to absorption
+from cil.processors import TransmissionAbsorptionConverter
+data = TransmissionAbsorptionConverter()(data)
+#%%
+# show data again
+
+show2D(data, title='data')
+
+#%%
 # run FDK
 ig = data.geometry.get_ImageGeometry(resolution=1)
 
@@ -31,20 +40,20 @@ fdkrecon = fdk.run()
 # show FDK reconstruction
 show2D(fdkrecon, title='FDK reconstruction')
 #%%
-# create LS + TV optimisation problem to be solved by FISTA
+# create LS (+ TV) optimisation problem to be solved by FISTA
 
 A = ProjectionOperator(image_geometry=ig, acquisition_geometry=data.geometry)
 f = LeastSquares(b=data, A=A, c=0.5)
-# alpha = 
+# alpha = 1e0
 # g = (alpha/ig.voxel_size_x)  * FGP_TV(device='gpu', nonnegativity=1)
-
-g = ZeroFunction()
+g = IndicatorBox(lower=0)
+# g = ZeroFunction()
 
 #%% 
 #define a callback
-# print (quality_measures.mse(algo.solution, fdkrecon))
-def mycallback(fdkrecon, iteration_num, objective, solution):
-    print ("MSE with FDK iteration {} {}".format(iteration_num, quality_measures.psnr(solution, fdkrecon)))
+def mycallback(fdkrecon, iteration_num, objective_value, solution):
+    print ("PSNR with FDK iteration {} {}".format(iteration_num, 
+        quality_measures.psnr(solution, fdkrecon)))
 
 # Because this callback requires the fdkrecon, we can pass the callback as 
 # Method 1: a lambda function
@@ -64,9 +73,10 @@ algo = FISTA(initial=ig.allocate(0), f=f, g=g, max_iteration=100,
 # this is achieved by updating the should_stop method of the algorithm
 # Example: 
 # stop when the quality measure psnr with the FDK reconstruction is above 112
-def stopping_rule(algo):
-    return quality_measures.psnr(algo.solution, algo.fdkrecon) > 112 or\
-        algo.max_iteration_stop_cryterion()
+def stopping_rule(algorithm):
+    '''Returns boolean true if the stopping criterion is met'''
+    return quality_measures.psnr(algorithm.solution, algorithm.fdkrecon) > 114. or\
+        algorithm.max_iteration_stop_cryterion()
 
 # the new stop criterion requires the fdkrecon to be available in the algorithm
 # this is because I've written it this way...
@@ -76,6 +86,7 @@ algo.fdkrecon = fdkrecon
 
 # Method 1: with a partial function
 # algo.should_stop = partial(stopping_rule, algo)
+
 # Method 2: with types from Python
 from types import MethodType
 algo.should_stop = MethodType(stopping_rule, algo)
