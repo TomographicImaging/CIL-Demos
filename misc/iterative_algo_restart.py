@@ -44,39 +44,68 @@ show2D(fdkrecon, title='FDK reconstruction')
 
 A = ProjectionOperator(image_geometry=ig, acquisition_geometry=data.geometry)
 f = LeastSquares(b=data, A=A, c=0.5)
-# alpha = 1e0
+# alpha = 1e3
 # g = (alpha/ig.voxel_size_x)  * FGP_TV(device='gpu', nonnegativity=1)
 g = IndicatorBox(lower=0)
 # g = ZeroFunction()
 
-#%% 
-#define a callback
-def mycallback(fdkrecon, iteration_num, objective_value, solution):
-    print ("PSNR with FDK iteration {} {}".format(iteration_num, 
-        quality_measures.psnr(solution, fdkrecon)))
-
-# Because this callback requires the fdkrecon, we can pass the callback as 
-# Method 1: a lambda function
-callback = lambda x,y,z: mycallback(fdkrecon, x,y,z)
-# or 
-# Method 2: with a partial function 
-# from functools import partial
-# callback = partial(mycallback, fdkrecon)
 #%%
 
-algo = FISTA(initial=ig.allocate(0), f=f, g=g, max_iteration=100,
+algo = FISTA(initial=ig.allocate(0), f=f, g=g, 
+             max_iteration=100,
              update_objective_interval=2)
+
+#%%
+
+# run FISTA for 10 iterations
+num_iter = 10
+algo.run(num_iter, print_interval=1)
+#%%
+# show result
+show2D([fdkrecon, algo.solution], title=['FDK','FISTA result'], fix_range=True)
+
+#%% Adding a callback to run
+# a callback is a function that gets called every update_objective_interval to do some operations
+# possibly to report to the user. 
+# https://github.com/TomographicImaging/CIL/blob/76e50145cf376d35d70a7f0d437b81f5bdedc795/Wrappers/Python/cil/optimisation/algorithms/Algorithm.py#L242-L243
+
+
+# What about a callback to plot, maybe?
+def plotting_callback(iteration_num, objective_value, solution):
+    show2D(solution, title = f"iteration {iteration_num} \nobjective_value {objective_value}")
+
+#%%
+# Add the callback during the run method
+
+algo.run(num_iter, print_interval=1, callback=plotting_callback)
+
 
 #%%
 # Changing the stopping criterion
 
-# this is achieved by updating the should_stop method of the algorithm
+# this is achieved by updating the should_stop method of the algorithm.
+# Notice that the stopping criterion is checked at every iteration of the 
+# algorithm.
 # Example: 
-# stop when the quality measure psnr with the FDK reconstruction is above 112
-def stopping_rule(algorithm):
+# stop when the quality measure psnr with the FDK reconstruction is above the threshold
+def stopping_rule(threshold, check_interval, algorithm):
     '''Returns boolean true if the stopping criterion is met'''
-    return quality_measures.psnr(algorithm.solution, algorithm.fdkrecon) > 114. or\
-        algorithm.max_iteration_stop_cryterion()
+    if algorithm.iteration % check_interval == 0:
+        # check only every check_interval iterations
+        # this may be useful if the evaluation of the criterion is expensive
+        new_stopping_criterion = \
+            quality_measures.psnr(algorithm.solution, algorithm.fdkrecon) > threshold
+        # I suggest to keep the max iteration criterion
+        return new_stopping_criterion or algorithm.max_iteration_stop_cryterion()
+    else:
+        return False
+
+
+# Let's redefine the algorithm
+
+algo = FISTA(initial=ig.allocate(0), f=f, g=g, 
+             max_iteration=100,
+             update_objective_interval=2)
 
 # the new stop criterion requires the fdkrecon to be available in the algorithm
 # this is because I've written it this way...
@@ -89,12 +118,31 @@ algo.fdkrecon = fdkrecon
 
 # Method 2: with types from Python
 from types import MethodType
-algo.should_stop = MethodType(stopping_rule, algo)
+# we need to pass the variable value to the stopping_rule, therefore we
+# need to preconfigure it with partial
+from functools import partial
+threshold = 114.
+check_interval = 1
+algo.should_stop = MethodType(partial(stopping_rule, threshold, check_interval), algo)
+
+#%% 
+# Let's check the PSNR value with a callback
+#define a callback
+def mycallback(fdkrecon, iteration_num, objective_value, solution):
+    print ("PSNR with FDK iteration {} {}".format(iteration_num, 
+        quality_measures.psnr(solution, fdkrecon)))
+
+# Because this callback requires the fdkrecon, we can pass the callback as 
+# Method 1: a lambda function
+callback = lambda x,y,z: mycallback(fdkrecon, x,y,z)
+# or 
+# Method 2: with a partial function 
+# from functools import partial
+# callback = partial(mycallback, fdkrecon)
 
 #%%
 # run FISTA
 num_iter = 10
-algo.max_iteration += num_iter
 algo.run(num_iter, print_interval=1, callback=callback)
 
 #%%
@@ -102,9 +150,21 @@ algo.run(num_iter, print_interval=1, callback=callback)
 show2D([fdkrecon, algo.solution], title=['FDK','FISTA result'], fix_range=True)
 #%%
 
+# Notice: one can save the solution of the algorithm in a list, however
+# algo.solution is just a pointer to the solution, so adding algo.solution to 
+# a list would only add the reference to the same object. To avoid this you either
+# need to copy solution or get a slice as below.
+a = []
+a.append (algo.solution.get_slice(vertical='centre'))
+algo.run(2)
+a.append (algo.solution.get_slice(vertical='centre'))
+algo.run(2)
+a.append (algo.solution.get_slice(vertical='centre'))
+algo.run(2)
 
-print (algo.solution.mean(), fdkrecon.mean())
-# %%
-from cil.utilities import quality_measures
-print (quality_measures.mse(algo.solution, fdkrecon))
+#%%
+# let's have a look at the data
+show2D(a)
+
+
 # %%
