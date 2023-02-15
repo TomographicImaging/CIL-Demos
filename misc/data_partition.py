@@ -21,7 +21,11 @@ from cil.utilities.display import show2D
 
 import numpy as np
 
-
+# Notice that the step sizes for PDHG and SPDHG are not good and the algorithms do not converge
+# We have noticed this behaviour already and it seems to be due to the pixel size is not 1, 
+# and there are scaling issues in the operators.
+# A discussion about how to solve this is at 
+# https://github.com/TomographicImaging/CIL/discussions/936
 
 def add_noise( out, sino, background_counts = 20000 ):    
     '''Add Poisson noise to the sinogram.
