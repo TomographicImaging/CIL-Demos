@@ -76,20 +76,37 @@ show2D([data, sino], title=['noisy', 'Sinogram'], cmap='inferno')
 alpha = 1000
 F = BlockFunction(
     L2NormSquared(b=data),
-    alpha * MixedL21Norm()
+    MixedL21Norm()
 )
 
 G = IndicatorBox(lower=0)
 
 Op = BlockOperator(
     TP(image_geometry=ig, acquisition_geometry=data.geometry), 
-    GradientOperator(ig, bnd_cond='Neumann')
+    alpha * GradientOperator(ig, bnd_cond='Neumann')
 )
 
 algo = {}
 algo['PDHG'] = PDHG(f=F, g=G, operator=Op, max_iteration=1000, update_objective_interval=100)
 
+
 #%%
+
+def callback(algo, num_iter, obj_val, solution):
+    normK = algo.operator.norm()
+    gamma = solution.norm()
+    sigma = gamma / (normK)
+    tau = 1 / (gamma * normK)
+    algo.set_step_sizes(sigma, tau)
+
+normK = Op.norm()
+stride = 2 
+
+from functools import partial
+adaptive_step_size = partial(callback, algo['PDHG'])
+    
+
+# algo['PDHG'].run(1000, verbose=2, callback=adaptive_step_size)
 algo['PDHG'].run(1000, verbose=2)
 
 #%%
@@ -114,14 +131,14 @@ for i, geom in enumerate(datasplit.geometry):
     fs.append(
         L2NormSquared(b=datasplit.get_item(i))
     )
-fs.append(alpha * MixedL21Norm())
+fs.append(MixedL21Norm())
 
 F2 = BlockFunction(*fs)
 
 
 Op2 = BlockOperator(
     * TP(image_geometry=ig, acquisition_geometry=datasplit.geometry).operators, 
-    GradientOperator(ig, bnd_cond='Neumann')
+    alpha * GradientOperator(ig, bnd_cond='Neumann')
 )
 
 G2 = IndicatorBox(lower=0)
