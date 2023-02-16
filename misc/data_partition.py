@@ -51,6 +51,16 @@ def add_noise( out, sino, background_counts = 20000 ):
     out.fill(sino_out)
     return
 
+def plot_objectives(algo, offset=0):
+    import matplotlib.pyplot as plt
+    plt.figure()
+    for k,v in algo.items():
+        plt.semilogy(v.objective[offset:], label=k)
+        
+    plt.xlabel('Iteration')
+    plt.ylabel('Objective')
+    plt.legend()
+    plt.show()
 
 twod = True
 data = dataexample.SIMULATED_CONE_BEAM_DATA.get()
@@ -68,6 +78,8 @@ add_noise(data, sino, background_counts = 500)
 # now data contains the noisy sinogram
 show2D([data, sino], title=['noisy', 'Sinogram'], cmap='inferno')
 
+#%%
+algo = {}
 
 # %%
 # TV regularisation with PDHG
@@ -86,31 +98,23 @@ Op = BlockOperator(
     alpha * GradientOperator(ig, bnd_cond='Neumann')
 )
 
-algo = {}
+
 algo['PDHG'] = PDHG(f=F, g=G, operator=Op, max_iteration=1000, update_objective_interval=100)
 
 
-#%%
+#%%  
 
-def callback(algo, num_iter, obj_val, solution):
-    normK = algo.operator.norm()
-    gamma = solution.norm()
-    sigma = gamma / (normK)
-    tau = 1 / (gamma * normK)
-    algo.set_step_sizes(sigma, tau)
-
-normK = Op.norm()
-stride = 2 
-
-from functools import partial
-adaptive_step_size = partial(callback, algo['PDHG'])
-    
-
-# algo['PDHG'].run(1000, verbose=2, callback=adaptive_step_size)
 algo['PDHG'].run(1000, verbose=2)
 
 #%%
-show2D(algo['PDHG'].solution, title='TV with PDHG', cmap='inferno')
+# show2D(algo['PDHG'].solution, title='TV with PDHG', cmap='inferno')
+
+#%%
+show2D([algo[k].solution for k in algo.keys()],
+        title=[f'TV with {k}' for k in algo.keys()], cmap='inferno')
+
+
+
 # %%
 # TV regularisation with SPDHG
 # -----------------
@@ -123,6 +127,7 @@ datasplit = data.partition(num_batches, Partitioner.STAGGERED)
 
 # 2 - Create the operators
 # this is a BlockOperator
+# row operator
 Projs = TP(ig, datasplit.geometry)
 
 fs = []
@@ -135,11 +140,11 @@ fs.append(MixedL21Norm())
 
 F2 = BlockFunction(*fs)
 
-
 Op2 = BlockOperator(
-    * TP(image_geometry=ig, acquisition_geometry=datasplit.geometry).operators, 
+    * Projs.get_as_list(), 
     alpha * GradientOperator(ig, bnd_cond='Neumann')
 )
+
 
 G2 = IndicatorBox(lower=0)
 
@@ -150,5 +155,18 @@ algo['SPDHG'] = SPDHG(f=F2, g=G2, operator=Op2, max_iteration=1000, update_objec
 algo['SPDHG'].run(1000, verbose=2)
 
 #%%
-show2D([algo['PDHG'].solution, algo['SPDHG'].solution], title=['TV with PDHG','TV with SPDHG'], cmap='inferno')
+show2D([algo[k].solution for k in algo.keys()],
+        title=[f'TV with {k}' for k in algo.keys()], cmap='inferno')
+# %%
+# FDK
+from cil.recon import FDK
+
+recon = FDK(data, ig).run()
+
+#%%
+show2D([recon]+[algo[k].solution for k in algo.keys()],
+        title=['FDK']+[f'TV with {k}' for k in algo.keys()], 
+        cmap='inferno', num_cols=3, fix_range=True)
+#%%
+plot_objectives(algo)
 # %%
