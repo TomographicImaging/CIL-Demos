@@ -40,7 +40,7 @@ CIL's [optimised FDK/FBP](https://github.com/TomographicImaging/CIL/discussions/
 1. the Intel [Integrated Performance Primitives](https://www.intel.com/content/www/us/en/developer/tools/oneapi/ipp.html#gs.gxwq5p) Library ([license](https://www.intel.com/content/dam/develop/external/us/en/documents/pdf/intel-simplified-software-license-version-august-2021.pdf)) which can be installed via conda from the `intel` [channel](https://anaconda.org/intel/ipp).
 2. [TIGRE](https://github.com/CERN/TIGRE), which can be installed via conda from the `ccpi` channel.
 
-## Run the demos Locally
+## Run the demos locally
 
 - Activate your environment using: ``conda activate cil-demos``.
 
@@ -59,7 +59,7 @@ have automatically been installed by conda.
 Instead of using the ``jupyter-notebook`` command, an alternative is to run the notebooks in ``VSCode``.
 
 
-## Advanced demos
+## Advanced Demos
 
 For more advanced general imaging and tomography demos, please visit the following repositories:
 
