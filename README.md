@@ -4,7 +4,7 @@ CIL-Demos is a collection of jupyter notebooks, designed to introduce you to the
 
 The demos can be found in the [demos](https://github.com/TomographicImaging/CIL-Demos/blob/main/demos/) folder, and the [README.md](https://github.com/TomographicImaging/CIL-Demos/blob/main/demos/README.md) in this folder provides some info about the notebooks, including the additional datasets which are required to run them.
 
-# CIL-Demos on binder
+### Binder
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/TomographicImaging/CIL-Demos/HEAD?urlpath=lab/tree/binder%2Findex.ipynb)
 
@@ -12,7 +12,7 @@ To open and run the notebooks interactively in an executable environment, please
 
 **Note:** In the Binder interface, there is no GPU available.
 
-# Install the demos locally
+## Install the demos locally
 
 To install via `conda`, create a new environment using:
 
@@ -34,13 +34,13 @@ where,
 
 ```ipywidgets``` will allow you to use interactive widgets in our jupyter notebooks.
 
-## Dependency Notes
+### Dependency Notes
 
 CIL's [optimised FDK/FBP](https://github.com/TomographicImaging/CIL/discussions/1070) `recon` module requires:
 1. the Intel [Integrated Performance Primitives](https://www.intel.com/content/www/us/en/developer/tools/oneapi/ipp.html#gs.gxwq5p) Library ([license](https://www.intel.com/content/dam/develop/external/us/en/documents/pdf/intel-simplified-software-license-version-august-2021.pdf)) which can be installed via conda from the `intel` [channel](https://anaconda.org/intel/ipp).
 2. [TIGRE](https://github.com/CERN/TIGRE), which can be installed via conda from the `ccpi` channel.
 
-# Run the demos Locally
+## Run the demos Locally
 
 - Activate your environment using: ``conda activate cil-demos``.
 
@@ -59,11 +59,7 @@ have automatically been installed by conda.
 Instead of using the ``jupyter-notebook`` command, an alternative is to run the notebooks in ``VSCode``.
 
 
-
-
-
-
-# Advanced demos
+## Advanced demos
 
 For more advanced general imaging and tomography demos, please visit the following repositories:
 
