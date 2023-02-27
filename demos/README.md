@@ -1,6 +1,6 @@
-# CIL Examples
+# CIL Demos
 
-a collection of examples of how to use CIL in your tomographic reconstruction pipeline.
+A collection of examples of how to use CIL in your tomographic reconstruction pipeline.
 
 ## 1_Introduction
  These will introduce you to the basic concepts in CIL and show you how to read in, pre-process and reconstruct your data using simple algorithms.
