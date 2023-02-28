@@ -4,6 +4,9 @@ CIL-Demos is a collection of jupyter notebooks, designed to introduce you to the
 
 The demos can be found in the [demos](https://github.com/TomographicImaging/CIL-Demos/blob/main/demos/) folder, and the [README.md](https://github.com/TomographicImaging/CIL-Demos/blob/main/demos/README.md) in this folder provides some info about the notebooks, including the additional datasets which are required to run them.
 
+![image](https://user-images.githubusercontent.com/60604372/221801529-14448213-45f0-4318-a7ec-ef7b0c2641cf.png)
+
+
 ### Binder
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/TomographicImaging/CIL-Demos/HEAD?urlpath=lab/tree/binder%2Findex.ipynb)
