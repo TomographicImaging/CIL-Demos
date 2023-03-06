@@ -97,7 +97,7 @@ Op = BlockOperator(
 )
 
 algo = {}
-algo['PDHG_adaptive'] = PDHG(f=F, g=G, operator=Op, max_iteration=1000, update_objective_interval=100)
+algo['PDHG'] = PDHG(f=F, g=G, operator=Op, max_iteration=1000, update_objective_interval=100)
 
 
 #%%  
@@ -196,7 +196,7 @@ algo['SPDHG'].run(1000, verbose=2)
 #%%
 # Renormailsed SPDHG
 # ------------------
-alpha_renorm3 = 1e2
+alpha_renorm3 = 1e0
 pp = []
 for i, op in enumerate(Projs):
     pp.append((1/op.norm()) * op)
@@ -210,10 +210,12 @@ Op3 = BlockOperator(
 
 fs = []
 for i, geom in enumerate(datasplit.geometry):
+    # sop = Projs.operators[i]
     sop = pp[i]
     data_sub = datasplit.get_item(i)
     fs.append(    
-        ScaledArgFunction( L2NormSquared(b=data_sub/sop.norm()), sop.norm()),
+        # ScaledArgFunction( L2NormSquared(b=data_sub/sop.norm()), sop.norm()),
+        L2NormSquared(b=data_sub)
     )
 fs.append(alpha_renorm3 * ScaledArgFunction( MixedL21Norm(), g3.norm()))
 
