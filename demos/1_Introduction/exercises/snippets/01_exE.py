@@ -16,7 +16,7 @@ data_absorption.reorder(order='tigre')
 # create an FDK algorithm with the new geometry
 fdk =  FDK(data_absorption, cropped_ig)
 
-#run th ealgorithm to get the reconstruction
+#run the algorithm to get the reconstruction
 recon = fdk.run()
 
 #visualise the reconstruction using islicer

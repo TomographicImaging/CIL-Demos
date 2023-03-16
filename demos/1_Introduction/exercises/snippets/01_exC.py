@@ -1,4 +1,4 @@
-# calculate the absortion data using the Beer–Lambert law
+# calculate the absorption data using the Beer–Lambert law
 data_absorption = TransmissionAbsorptionConverter()(data_in)
 
 # show the centre slice using show2D
