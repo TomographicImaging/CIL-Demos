@@ -11,6 +11,7 @@ dependencies:
   - ipywidgets[version='<8']
   - astra-toolbox
   - cil=23.0.1
-  - ccpi-regulariser
+  - astra-toolbox
+  - cil=23.0.1
   - tomophantom
 prefix: /media/newhd/vaggelis/miniconda3/envs/cil_binder
