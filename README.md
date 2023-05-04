@@ -9,7 +9,7 @@
 In order to open and run the notebooks interactively in an executable environment, please click the Binder link above. 
 
 **Note:** In the Binder interface, there is no GPU available.
-**Note:** In the Google Cloud platform, there is free GPU (16Gb). However, you need to install the CIL manually.
+**Note:** In the Google Cloud platform, there is free GPU (16Gb. However, you need to install the CIL manually.
 
 # Run the notebooks locally
 Alternatively, you can create a Conda environment using the environment.yml in the [binder](https://github.com/TomographicImaging/CIL-Demos/tree/main/binder) directory:
