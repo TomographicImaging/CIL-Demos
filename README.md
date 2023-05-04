@@ -2,8 +2,6 @@
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/TomographicImaging/CIL-Demos/HEAD?urlpath=lab/tree/binder%2Findex.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/epapoutsellis/CIL-Demos/blob/gcolab/gcolab/CIL_Colab.ipynb)
 
-# Run the notebooks on the cloud
-
 # CIL-Demos
 
 CIL-Demos is a collection of jupyter notebooks, designed to introduce you to the [Core Imaging Library (CIL)](https://github.com/TomographicImaging/CIL).
@@ -19,7 +17,8 @@ The demos can be found in the [demos](https://github.com/TomographicImaging/CIL-
 To open and run the notebooks interactively in an executable environment, please click the Binder link above. 
 
 **Note:** In the Binder interface, there is no GPU available.
-**Note:** In the Google Cloud platform, there is free GPU (16Gb). However, you need to install the CIL manually.
+
+**Note:** In the Google Cloud platform, there is free GPU (16Gb). However, you need to install CIL manually.
 
 ## Install the demos locally
 
