@@ -8,9 +8,7 @@ channels:
   - astra-toolbox
   - defaults
 dependencies:
-  - ipywidgets[version='<8']
   - astra-toolbox
   - cil=23.0.1
-  - ccpi-regulariser
   - tomophantom
 prefix: /media/newhd/vaggelis/miniconda3/envs/cil_binder
