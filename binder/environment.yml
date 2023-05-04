@@ -1,4 +1,4 @@
-name: cil_gcolab
+name: cil_binder
 channels:
   - intel
   - oxfordcontrol
@@ -8,9 +8,9 @@ channels:
   - astra-toolbox
   - defaults
 dependencies:
-  - astra-toolbox
-  - ccpi-regulariser
-  - cil=23.0.1
   - ipywidgets[version='<8']
+  - astra-toolbox
+  - cil=23.0.1
+  - ccpi-regulariser
   - tomophantom
-prefix: /media/newhd/vaggelis/miniconda3/envs/cil_gcolab
+prefix: /media/newhd/vaggelis/miniconda3/envs/cil_binder
