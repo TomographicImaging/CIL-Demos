@@ -25,7 +25,7 @@ To open and run the notebooks interactively in an executable environment, please
 To install via `conda`, create a new environment using:
 
 ```bash
-conda create --name cil-demos -c conda-forge -c intel -c astra-toolbox -c ccpi cil=22.2.0 astra-toolbox tigre ccpi-regulariser tomophantom "ipywidgets<8"
+conda create --name cil-demos -c conda-forge -c intel -c astra-toolbox -c ccpi cil=23.1.0 astra-toolbox tigre ccpi-regulariser tomophantom "ipywidgets<8"
 ```
 
 where,
