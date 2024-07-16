@@ -25,7 +25,7 @@ To open and run the notebooks interactively in an executable environment, please
 To install via `conda`, create a new environment using:
 
 ```bash
-conda create --name cil-demos -c conda-forge -c intel -c astra-toolbox -c ccpi cil=23.1.0 astra-toolbox tigre ccpi-regulariser tomophantom "ipywidgets<8"
+conda create --name cil-demos -c conda-forge -c https://software.repos.intel.com/python/conda -c astra-toolbox -c ccpi cil=23.1.0 astra-toolbox tigre ccpi-regulariser tomophantom "ipywidgets<8"
 ```
 
 where,
@@ -45,7 +45,7 @@ where,
 ### Dependency Notes
 
 CIL's [optimised FDK/FBP](https://github.com/TomographicImaging/CIL/discussions/1070) `recon` module requires:
-1. the Intel [Integrated Performance Primitives](https://www.intel.com/content/www/us/en/developer/tools/oneapi/ipp.html#gs.gxwq5p) Library ([license](https://www.intel.com/content/dam/develop/external/us/en/documents/pdf/intel-simplified-software-license-version-august-2021.pdf)) which can be installed via conda from the `intel` [channel](https://anaconda.org/intel/ipp).
+1. the Intel [Integrated Performance Primitives](https://www.intel.com/content/www/us/en/developer/tools/oneapi/ipp.html#gs.gxwq5p) Library ([license](https://www.intel.com/content/dam/develop/external/us/en/documents/pdf/intel-simplified-software-license-version-august-2021.pdf)) which can be installed via conda from the `https://software.repos.intel.com/python/conda` channel.
 2. [TIGRE](https://github.com/CERN/TIGRE), which can be installed via conda from the `ccpi` channel.
 
 ## Run the demos locally
