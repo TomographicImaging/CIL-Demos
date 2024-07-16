@@ -10,8 +10,8 @@ channels:
 dependencies:
   - ipywidgets[version='<8']
   - astra-toolbox
-  - cil=23.0.1
+  - cil=23.1.0
   - astra-toolbox
-  - cil=23.0.1
+  - cil=23.1.0
   - tomophantom
 prefix: /media/newhd/vaggelis/miniconda3/envs/cil_binder

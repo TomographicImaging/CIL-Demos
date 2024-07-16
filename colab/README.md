@@ -47,7 +47,7 @@ condacolab.install()
 The `condacola.install()` provides Mambaforge by default, which is faster than miniconda. We use the following command to install CIL and the additional packages/plugins.
 
 ```bash
-!mamba install -c conda-forge -c intel -c ccpi cil=23.0.1 astra-toolbox ccpi-regulariser tomophantom "ipywidgets<8" --quiet
+!mamba install -c conda-forge -c https://software.repos.intel.com/python/conda -c ccpi cil=23.1.0 astra-toolbox ccpi-regulariser tomophantom "ipywidgets<8" --quiet
 ```
 
 
