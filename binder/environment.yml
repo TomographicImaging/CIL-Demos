@@ -1,6 +1,6 @@
 name: cil_binder
 channels:
-  - intel
+  - https://software.repos.intel.com/python/conda
   - oxfordcontrol
   - ccpi
   - conda-forge
@@ -10,8 +10,8 @@ channels:
 dependencies:
   - ipywidgets[version='<8']
   - astra-toolbox
-  - cil=23.0.1
+  - cil=23.1.0
   - astra-toolbox
-  - cil=23.0.1
+  - cil=23.1.0
   - tomophantom
 prefix: /media/newhd/vaggelis/miniconda3/envs/cil_binder
