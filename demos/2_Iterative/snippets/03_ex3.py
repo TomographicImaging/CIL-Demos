@@ -4,6 +4,5 @@ K = A
 
 # Setup and run PDHG
 pdhg_tv_implicit_regtk = PDHG(f = F, g = G, operator = K,
-            max_iteration = 1000,
             update_objective_interval = 200)
-pdhg_tv_implicit_regtk.run(verbose=1)
+pdhg_tv_implicit_regtk.run(1000, verbose=1)
