@@ -5,6 +5,5 @@ F = BlockFunction(f1, f2)
 
 # Setup and run PDHG
 pdhg_tikhonov_explicit = PDHG(f = F, g = G, operator = K,
-            max_iteration = 1000,
             update_objective_interval = 200)
-pdhg_tikhonov_explicit.run(verbose=1)
+pdhg_tikhonov_explicit.run(1000, verbose=1)

@@ -7,9 +7,8 @@ sirt = SIRT(initial = x_init,
             operator = A ,
             data = absorption_data, 
             constraint = IndicatorBox(lower=0),
-            max_iteration = 300, 
             update_objective_interval=100)
-sirt.run(verbose=1)
+sirt.run(300, verbose=1)
 sirt_recon = sirt.solution
 
 # Show reconstructions
