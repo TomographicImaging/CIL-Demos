@@ -14,12 +14,15 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 #
-#   Authored by:    Margaret Duff (STFC - UKRI)
+#   Authored by: Jakob S. Jørgensen (DTU)
+#                Evangelos Papoutsellis(Finden)
+#                Gemma Fardell (UKRI-STFC)
+#                Edoardo Pasca (UKRI-STFC)     
+#                Laura Murgatroyd (UKRI-STFC)
 #                   
 from htc_code.mat_reader import loadmat
 import numpy as np
 from cil.framework import AcquisitionGeometry, AcquisitionData
-from cil.plugins.tigre import ProjectionOperator
 from cil.processors import Padder
 from cil.processors import MaskGenerator
 import matplotlib.pyplot as plt
@@ -130,68 +133,6 @@ def generate_reduced_data(data, astart, arange):
     ag_reduced.set_angles(ag_reduced.angles[idx])
     data_reduced = AcquisitionData(data_array, geometry=ag_reduced)
     return data_reduced
-
-def TValg(data, alpha, lower=0.0, upper=np.inf, imsize=None):
-    ig = data.geometry.get_ImageGeometry()
-    if imsize is not None:
-        ig.voxel_num_x = imsize
-        ig.voxel_num_y = imsize
-    A = ProjectionOperator(ig, data.geometry)
-    F = LeastSquares(A, data)
-    G = alpha*TotalVariation(lower=lower, upper=upper)
-    alg_tv = FISTA(initial=ig.allocate(0.0), f=F, g=G, max_iteration=1000, update_objective_interval=10)
-    return alg_tv
-
-def TV_iso_and_aniso_PDHG(preproc_data, fidelity_weight=10, 
-                          iso_weight = 1.0,
-                          aniso_weight_y = 1.0,
-                          aniso_weight_x = 1.0, lower = 0, upper = 0.04, init_recon = None,
-                          max_iterations = 1000, update_objective_interval = 100, verbose=1, imsize=None):
-        
-    # image geometry
-    ig = preproc_data.geometry.get_ImageGeometry()
-    
-    if imsize is not None:
-        ig.voxel_num_x = imsize
-        ig.voxel_num_y = imsize    
-    
-    if init_recon is None:
-        init_recon = ig.allocate()    
-    
-    # FinDiff operators in y, x (numpy)
-    DY = FiniteDifferenceOperator(ig, direction=0)
-    DX = FiniteDifferenceOperator(ig, direction=1)
-    
-    # GradOperar with c backend
-    Grad = GradientOperator(ig)
-    
-    
-    # PDHG operator
-    A = ProjectionOperator(ig, preproc_data.geometry)
-    K = BlockOperator(A, DY, DX, Grad)
-    
-    # PDHG composite part
-    f1 = (fidelity_weight/2)*L2NormSquared(b=preproc_data)
-    f2 = aniso_weight_y*L1Norm() #0.05
-    f3 = aniso_weight_x*L1Norm()
-    f4 = -iso_weight * MixedL21Norm()
-    F = BlockFunction(f1, f2, f3, f4)
-    
-    # PDHG no composite part
-    G = IndicatorBox(lower=lower, upper=upper)
-
-    normK = K.norm()
-    
-    sigma = 0.1
-    tau = 1./(sigma*normK**2)
-    
-    pdhg_anis_iso = PDHG(initial=init_recon,f=F, g=G, operator=K, 
-                update_objective_interval=update_objective_interval,
-                sigma=sigma, tau=tau,
-               max_iteration=max_iterations)
-    pdhg_anis_iso.run(verbose=verbose)    
-    
-    return pdhg_anis_iso
 
 
 def correct_normalisation(data):
