@@ -1,6 +1,6 @@
 from cil.framework import AcquisitionData, AcquisitionGeometry
 from cil.io.utilities import HDF5_utilities
-from scripts.ReaderABC import ReaderABC
+from esrf_code.ReaderABC import ReaderABC
 import numpy as np
 import h5py
 
