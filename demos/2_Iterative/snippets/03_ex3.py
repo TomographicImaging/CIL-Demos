@@ -1,5 +1,5 @@
 F = 0.5 * L2NormSquared(b=absorption_data)
-G = (alpha_tv/ig2D.voxel_size_y) * FGP_TV(max_iteration=100, device='gpu')
+G = (alpha_tv/ig2D.voxel_size_y) * FGP_TV(max_iteration=100, device='gpu', nonnegativity=True)
 K = A
 
 # Setup and run PDHG
