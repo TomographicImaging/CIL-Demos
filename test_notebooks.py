@@ -53,6 +53,8 @@ def test_notebook_runs():
             for file in files:
                 if not file.endswith('.ipynb'):
                     continue
+                if file.endswith('_tmp.iynb'):
+                    continue
 
                 notebook_path = os.path.join(root, file)                
                 relative_path = os.path.relpath(notebook_path, start=os.getcwd()) 
