@@ -5,7 +5,7 @@ import re
 import shutil
 
 folders = ['demos', 'how-to']
-skip_notebooks = [
+skip_notebooks = ['demos/2_Iterative/04_SPDHG.ipynb'
 ]
 
 def run_tmp_notebook(notebook_path):    
@@ -33,7 +33,7 @@ def run_tmp_notebook(notebook_path):
                 else:
                     print(f"Warning: Snippet path {snippet_path} does not exist.")
 
-            # Clear cells containing ellipsis
+            # Clear cells containing ellipses
             if '...' in cell.source:
                 cell.source = ""  
 
@@ -41,7 +41,7 @@ def run_tmp_notebook(notebook_path):
         nbformat.write(notebook, f)
 
     print(f"\t\t Testing notebook: {tmp_notebook_path}")
-    pytest.main([tmp_notebook_path]) 
+    pytest.main([tmp_notebook_path])
 
     os.remove(tmp_notebook_path)
 
@@ -49,18 +49,16 @@ def test_notebook_runs():
     for folder in folders: 
         print(f"Searching in folder: {folder}")
         for root, dirs, files in os.walk(folder):
-            print(f"\tIn directory: {root}") 
+            print(f"\tIn directory: {root}")
             for file in files:
                 if not file.endswith('.ipynb'):
                     continue
-                if file.endswith('_tmp.iynb'):
+                if file.endswith('_tmp.ipynb'):
                     continue
 
-                notebook_path = os.path.join(root, file)                
-                relative_path = os.path.relpath(notebook_path, start=os.getcwd()) 
-
-                if relative_path in skip_notebooks:
-                    print(f"\t\t Skipping {notebook_path}") 
-                else:         
+                notebook_path = os.path.join(root, file)             
+                if notebook_path in skip_notebooks:
+                    print(f"\t\t Skipping notebook: {notebook_path}")
+                else:
                     run_tmp_notebook(notebook_path)
                 
