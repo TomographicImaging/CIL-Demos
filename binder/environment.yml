@@ -12,7 +12,7 @@
 # Authors:
 # CIL Developers, listed at: https://github.com/TomographicImaging/CIL/blob/master/NOTICE.txt
 
-name: cil_binder
+name: cil_binder4
 channels:
   - conda-forge
   - https://software.repos.intel.com/python/conda
@@ -26,4 +26,3 @@ dependencies:
   - scikit-image
   - matplotlib-base
   - cil=24.3.0
-  - setuptools <71
