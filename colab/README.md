@@ -1,6 +1,6 @@
 # CIL on Google Cloud
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/epapoutsellis/CIL-Demos/blob/gcolab/gcolab/CIL_Colab.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/CIL-Demos/blob/main/colab/CIL_Colab.ipynb)
 
 The Binder platform does not offer GPU. An alternative is to use the [Google Colab](https://research.google.com/colaboratory/) with 16Gb GPU for free.
 
