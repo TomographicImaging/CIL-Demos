@@ -12,7 +12,7 @@
 # Authors:
 # CIL Developers, listed at: https://github.com/TomographicImaging/CIL/blob/master/NOTICE.txt
 
-name: cil_binder4
+name: cil_binder
 channels:
   - conda-forge
   - https://software.repos.intel.com/python/conda
