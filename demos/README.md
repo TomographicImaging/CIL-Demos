@@ -19,6 +19,16 @@ A collection of examples of how to use CIL in your tomographic reconstruction pi
    - Download 'usb.zip' from: https://zenodo.org/record/4822516
    - direct link https://zenodo.org/record/4822516/files/usb.zip
 
+  ### Exercises
+  - 01_intro_seeds_conebeam.ipynb, 02_preprocessing_seeds_conebeam.ipynb
+    - Download: `korn.zip` from https://zenodo.org/record/6874123#.Y0ghJUzMKUm
+    - Direct link: https://zenodo.org/record/6874123/files/korn.zip
+
+  - 03_where_is_my_reader.ipynb
+    - Download `SparseBeads_B12_L1.zip` from https://zenodo.org/record/290117
+    - Direct link: https://zenodo.org/record/290117/files/SparseBeads_B12_L1.zip
+
+
 ## 2_Iterative
 These will introduce you to the regularised interative reconstruction methods and more compex scanning geometries.
 
@@ -52,5 +62,19 @@ The datasets needed for these notebooks are avaliable on zenodo. Please download
      - https://zenodo.org/record/4352944/files/FF.mat
      - https://zenodo.org/record/4352944/files/Lizard_head_scan_parameters.txt
      - https://zenodo.org/record/4352944/files/lizard_head_sinogram_full.mat
+
+## 4_Deep_Dives
+
+- 02_phase_retrieval.ipynb
+  - Download dataset using the command: `wget https://tomography.stfc.ac.uk/notebooks/phase/tomo_000068_binned.nxs`
+    
+- 03_htc_2022.ipynb
+  - Download `htc2022_ta_full.mat` from https://zenodo.org/records/6984868
+  - Direct link: https://zenodo.org/records/6984868/files/htc2022_ta_full.mat
+
+- 05_esrf_pipeline.ipynb
+  - Download `tomo_00065.h5` from https://tomobank.readthedocs.io/en/latest/source/data/docs.data.phasecontrast.html#multi-distance using:
+    - `wget https://g-a0400.fd635.8443.data.globus.org/tomo_00064_to_00067/tomo_00065.h5`
+
 
 
