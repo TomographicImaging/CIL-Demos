@@ -76,5 +76,7 @@ The datasets needed for these notebooks are avaliable on zenodo. Please download
   - Download `tomo_00065.h5` from https://tomobank.readthedocs.io/en/latest/source/data/docs.data.phasecontrast.html#multi-distance using:
     - `wget https://g-a0400.fd635.8443.data.globus.org/tomo_00064_to_00067/tomo_00065.h5`
 
-
+- 07_flexible_geometry.ipynb
+  - Download `non-standard_dragon.zip` from https://zenodo.org/records/16919651
+  - Direct link: https://zenodo.org/records/16919651/files/non-standard_dragon.zip
 
