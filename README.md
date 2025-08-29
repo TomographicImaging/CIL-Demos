@@ -37,7 +37,7 @@ The additional packages include:
 
 ```ipywidgets``` will allow you to use interactive widgets in our jupyter notebooks.
 
-Check the main [CIL repo](https://github.com/TomographicImaging/CIL?tab=readme-ov-file#installation-of-cil) for full details on how to install CIL and its dependencies.
+Check the main [CIL repo](https://github.com/TomographicImaging/CIL?tab=readme-ov-file#installation-of-cil) for full details on CIL and its dependencies and how to install into a custom environment.
 
 ## Run the demos locally
 
