@@ -20,27 +20,18 @@ To open and run the notebooks interactively in an executable environment, please
 
 **Note:** In the Google Cloud platform, there is free GPU (16Gb). However, you need to install CIL manually.
 
-## Install the demos locally
+## Install an environment to run the demos locally
 
-To install via `conda`, create a new environment using:
+Check the main [CIL repo](https://github.com/TomographicImaging/CIL?tab=readme-ov-file#installation-of-cil) for full details on how to install CIL. The easiest way to install an environment to run the demos is using our maintained environment file which contains the required packages to run the demos. Running the command below will create a new environment which has specific and tested versions of all CIL dependencies and additional packages required to run the demos: 
 
-```bash
-conda create --name cil -c conda-forge -c https://software.repos.intel.com/python/conda -c ccpi cil=24.3.0 ipp=2021.12 astra-toolbox=*=cuda* tigre ccpi-regulariser tomophantom ipykernel ipywidgets scikit-image
+```sh
+conda env create -f https://tomographicimaging.github.io/scripts/env/cil_demos.yml
+```
+Or for a CPU-only environment which will work for a limited number of [CIL demos](https://github.com/TomographicImaging/CIL-Demos)
+```sh
+conda env create -f https://tomographicimaging.github.io/scripts/env/cil_demos_cpu.yml
 ```
 
-where,
-
-```astra-toolbox``` will allow you to use CIL with the [ASTRA toolbox](http://www.astra-toolbox.com/) projectors (GPLv3 license).
-
-```tigre``` will allow you to use CIL with the [TIGRE](https://github.com/CERN/TIGRE) toolbox projectors (BSD license).
-
-```ccpi-regulariser``` will give you access to the [CCPi Regularisation Toolkit](https://github.com/vais-ral/CCPi-Regularisation-Toolkit).
-
-```tomophantom``` [Tomophantom](https://github.com/dkazanc/TomoPhantom) will allow you to generate phantoms to use as test data.
-
-```cudatoolkit``` If you have GPU drivers compatible with more recent CUDA versions you can modify this package selector (installing tigre via conda requires 9.2).
-
-```ipywidgets``` will allow you to use interactive widgets in our jupyter notebooks.
 
 ### Dependency Notes
 
