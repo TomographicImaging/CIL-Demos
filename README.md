@@ -22,7 +22,7 @@ To open and run the notebooks interactively in an executable environment, please
 
 ## Install an environment to run the demos locally
 
-Check the main [CIL repo](https://github.com/TomographicImaging/CIL?tab=readme-ov-file#installation-of-cil) for full details on how to install CIL. The easiest way to install an environment to run the demos is using our maintained environment file which contains the required packages to run the demos. Running the command below will create a new environment which has specific and tested versions of all CIL dependencies and additional packages required to run the demos: 
+ The easiest way to install an environment to run the demos is using our maintained environment file which contains the required packages. Running the command below will create a new environment which has specific and tested versions of all CIL dependencies and additional packages required to run the demos: 
 
 ```sh
 conda env create -f https://tomographicimaging.github.io/scripts/env/cil_demos.yml
@@ -31,13 +31,13 @@ Or for a CPU-only environment which will work for a limited number of [CIL demos
 ```sh
 conda env create -f https://tomographicimaging.github.io/scripts/env/cil_demos_cpu.yml
 ```
+The additional packages include:
 
+```cudatoolkit``` If you have GPU drivers compatible with more recent CUDA versions you can modify this package selector (installing tigre via conda requires 9.2).
 
-### Dependency Notes
+```ipywidgets``` will allow you to use interactive widgets in our jupyter notebooks.
 
-CIL's [optimised FDK/FBP](https://github.com/TomographicImaging/CIL/discussions/1070) `recon` module requires:
-1. the Intel [Integrated Performance Primitives](https://www.intel.com/content/www/us/en/developer/tools/oneapi/ipp.html#gs.gxwq5p) Library ([license](https://www.intel.com/content/dam/develop/external/us/en/documents/pdf/intel-simplified-software-license-version-august-2021.pdf)) which can be installed via conda from the `https://software.repos.intel.com/python/conda` channel.
-2. [TIGRE](https://github.com/CERN/TIGRE), which can be installed via conda from the `ccpi` channel.
+Check the main [CIL repo](https://github.com/TomographicImaging/CIL?tab=readme-ov-file#installation-of-cil) for full details on how to install CIL and its dependencies.
 
 ## Run the demos locally
 
