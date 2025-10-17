@@ -41,21 +41,21 @@ Check the main [CIL repo](https://github.com/TomographicImaging/CIL?tab=readme-o
 
 ## Run the demos locally
 
-- Activate your environment using: ``conda activate cil-demos``.
+- Activate your environment using: ``conda activate cil_demos``.
 
 - Clone the ``CIL-Demos`` repository and move into the ``CIL-Demos`` folder.
 
-- Run: ``jupyter-notebook`` on the command line.
+- Run: ``jupyter-lab`` on the command line.
 
 - Navigate into ``demos/1_Introduction``
 
 The best place to start is the ``01_intro_walnut_conebeam.ipynb`` notebook.
-However, this requires installing the walnut dataset.
+However, this requires downloading the walnut dataset.
 
 To test your notebook installation, instead run ``03_preprocessing.ipynb``, which uses a dataset shipped with CIL, which will
 have automatically been installed by conda.
 
-Instead of using the ``jupyter-notebook`` command, an alternative is to run the notebooks in ``VSCode``.
+Instead of using the ``jupyter-lab`` command, an alternative is to run the notebooks in ``VSCode``.
 
 
 ## Advanced Demos
