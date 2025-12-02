@@ -5,5 +5,4 @@ F = LeastSquares(A, b)
 myFISTAL1 = FISTA(f=F, 
                   g=G, 
                   initial=x0, 
-                  max_iteration=1000, 
                   update_objective_interval=10)

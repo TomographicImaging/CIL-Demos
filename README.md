@@ -1,6 +1,6 @@
 # CIL on the Cloud
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/TomographicImaging/CIL-Demos/HEAD?urlpath=lab/tree/binder%2Findex.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/epapoutsellis/CIL-Demos/blob/gcolab/gcolab/CIL_Colab.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/TomographicImaging/CIL-Demos/HEAD?urlpath=lab/tree/binder%2Findex.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/TomographicImaging/CIL-Demos/blob/main/colab/CIL_Colab.ipynb)
 
 # CIL-Demos
 
@@ -20,33 +20,24 @@ To open and run the notebooks interactively in an executable environment, please
 
 **Note:** In the Google Cloud platform, there is free GPU (16Gb). However, you need to install CIL manually.
 
-## Install the demos locally
+## Install an environment to run the demos locally
 
-To install via `conda`, create a new environment using:
+ The easiest way to install an environment to run the demos is using our maintained environment file which contains the required packages. Running the command below will create a new environment which has specific and tested versions of all CIL dependencies and additional packages required to run the demos: 
 
-```bash
-conda create --name cil-demos -c conda-forge -c https://software.repos.intel.com/python/conda -c astra-toolbox -c ccpi cil=23.1.0 astra-toolbox tigre ccpi-regulariser tomophantom "ipywidgets<8"
+```sh
+conda env create -f https://tomographicimaging.github.io/scripts/env/cil_demos.yml
 ```
-
-where,
-
-```astra-toolbox``` will allow you to use CIL with the [ASTRA toolbox](http://www.astra-toolbox.com/) projectors (GPLv3 license).
-
-```tigre``` will allow you to use CIL with the [TIGRE](https://github.com/CERN/TIGRE) toolbox projectors (BSD license).
-
-```ccpi-regulariser``` will give you access to the [CCPi Regularisation Toolkit](https://github.com/vais-ral/CCPi-Regularisation-Toolkit).
-
-```tomophantom``` [Tomophantom](https://github.com/dkazanc/TomoPhantom) will allow you to generate phantoms to use as test data.
+Or for a CPU-only environment which will work for a limited number of [CIL demos](https://github.com/TomographicImaging/CIL-Demos)
+```sh
+conda env create -f https://tomographicimaging.github.io/scripts/env/cil_demos_cpu.yml
+```
+The additional packages include:
 
 ```cudatoolkit``` If you have GPU drivers compatible with more recent CUDA versions you can modify this package selector (installing tigre via conda requires 9.2).
 
 ```ipywidgets``` will allow you to use interactive widgets in our jupyter notebooks.
 
-### Dependency Notes
-
-CIL's [optimised FDK/FBP](https://github.com/TomographicImaging/CIL/discussions/1070) `recon` module requires:
-1. the Intel [Integrated Performance Primitives](https://www.intel.com/content/www/us/en/developer/tools/oneapi/ipp.html#gs.gxwq5p) Library ([license](https://www.intel.com/content/dam/develop/external/us/en/documents/pdf/intel-simplified-software-license-version-august-2021.pdf)) which can be installed via conda from the `https://software.repos.intel.com/python/conda` channel.
-2. [TIGRE](https://github.com/CERN/TIGRE), which can be installed via conda from the `ccpi` channel.
+Check the main [CIL repo](https://github.com/TomographicImaging/CIL?tab=readme-ov-file#installation-of-cil) for full details on CIL and its dependencies and how to install into a custom environment.
 
 ## Run the demos locally
 
