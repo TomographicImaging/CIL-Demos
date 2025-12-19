@@ -41,7 +41,7 @@ Check the main [CIL repo](https://github.com/TomographicImaging/CIL?tab=readme-o
 
 ## Run the demos locally
 
-- Activate your environment using: ``conda activate cil_demos``.
+- Activate your environment using: ``conda activate cil_demos``. (Or replace `cil_demos` with `cil_demos_cpu` if you created the CPU-only environment).
 
 - Clone the ``CIL-Demos`` repository and move into the ``CIL-Demos`` folder.
 
