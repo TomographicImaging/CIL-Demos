@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 
 from cil.utilities.display import show_geometry, show2D
 from cil.framework import  AcquisitionGeometry
-from cil.framework.labels import AngleUnit
 
 from cil.plugins.tigre import CIL2TIGREGeometry
 import tigre
@@ -23,13 +22,10 @@ lines[2:4,2:14,10:14] = 1
 ig = ImageGeometry(lines.shape[1],lines.shape[2],lines.shape[0])
 lines = ImageData(lines, geometry=ig)
 show2D(lines,
-    #    ['X', 'Y', 'Z'], 
        slice_list=[(0, int(lines.shape[0]/2)), (1, int(lines.shape[1]/2)), (2, 3)], 
        num_cols=3)
-    #    origin='lower-left')
 
-
-# %%
+# %% Start with an untilted geometry
 untilted_rotation_axis = np.array([0, 0, 1])
 angles = np.arange(0,360,1)
 ag_untilted = AcquisitionGeometry.create_Parallel3D(rotation_axis_direction=untilted_rotation_axis)\
@@ -37,13 +33,14 @@ ag_untilted = AcquisitionGeometry.create_Parallel3D(rotation_axis_direction=unti
     .set_panel(lines.shape[1:3])
 show_geometry(ag_untilted)
 
-# %%
+# %% Create projections
 A = ProjectionOperator(ig, ag_untilted)
 proj = A.direct(lines) 
 show2D([proj.array[0], proj.array[90], proj.array[180]], 
        ['0', r'$\pi/2$', r'$\pi$'],
        num_cols=3)
-# %%
+
+# %% Now create a tilted geometry
 tilt = 20 # degrees
 tilt_rad = np.deg2rad(tilt)
 tilt_direction = np.array([1, 0, 0])
@@ -57,36 +54,18 @@ ag = AcquisitionGeometry.create_Parallel3D(rotation_axis_direction=tilted_rotati
     .set_panel(lines.shape[1:3])
 show_geometry(ag)
 
-
-
-# %%
-tg, angles = CIL2TIGREGeometry.getTIGREGeometry(ig, ag)
-
-tg.check_geo(angles)
-tg.cast_to_single()
-plt.plot(tg.angles,'--')
-# tg.rotDetector = np.array((0.0, 0.0, 0.0))
-
-from _Ax import _Ax_ext as Ax
-proj = Ax(lines.as_array(), tg, tg.angles,
-                      "interpolated", "parallel")
-show2D([proj[0], proj[90], proj[180]], 
-       ['0', r'$\pi/2$', r'$\pi$'],
-       num_cols=3)
-
-# %%
+# %% Create the projections
 A = ProjectionOperator(ig, ag)
 
 plt.plot(A.tigre_geom.angles)
-proj = A.direct(lines) # this doesn't currently work in CIL with parallel geometry and tilted rotation axis
-# show2D(proj, slice_list=[(0,0),(0,1),(0,2)])
-
+proj = A.direct(lines) 
 
 show2D([proj.array[0], proj.array[90], proj.array[180]], 
        ['0', r'$\pi/2$', r'$\pi$'],
        num_cols=3)
+# The sample is tilted towards the beam. Check the angle at 90 degres rotation
 
-# %% using tigre directly
+# %% Check how it looks using tigre directly
 geo = tigre.geometry()
 geo.DSO = 5
 geo.DSD = 5
@@ -99,10 +78,11 @@ geo.dVoxel = geo.sVoxel/geo.nVoxel
 geo.mode = "parallel"
 geo.accuracy = 0.5
 
-anglesY = -(np.deg2rad(ag.angles)  + np.pi/2)
+# conversion to tigre angles
+angles_t = -(np.deg2rad(ag.angles)  + np.pi/2)
 
 euler_angles_old = []
-for angle in anglesY:
+for angle in angles_t:
     R1 = R.from_euler("z", angle, degrees=False)
     combined = rotation_matrix * R1
     euler = combined.as_euler("ZYZ", degrees=False)
